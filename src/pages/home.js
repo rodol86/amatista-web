@@ -10,9 +10,13 @@ export default function HomePage({ session }) {
   useEffect(() => {
     // Replace with your actual API endpoint
     const fetchData = async () => {
-      const response = await fetch('/api/your-endpoint');
-      const result = await response.json();
-      setData(result);
+      try {
+        const response = await fetch('/api/your-endpoint');
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
 
     fetchData();
@@ -28,12 +32,18 @@ export default function HomePage({ session }) {
         <div className="grid grid-cols-3 gap-4">
           <button
             id="component-1"
-            className="col-span-1 border border-violet-800 p-4 bg-violet-200 text-black hover:bg-violet-400"
+            className="col-span-1 border border-violet-800 p-4 bg-violet-200 text-black hover:bg-violet-400 rounded cursor-default"
             onClick={() => router.push('/cliente')}
           >
             Clientes
           </button>
-          <button id="component-2" className="col-span-1 border border-violet-800 p-4 bg-violet-200 text-black hover:bg-violet-400">2</button>
+          <button
+            id="component-2"
+            className="col-span-1 border border-violet-800 p-4 bg-violet-200 text-black hover:bg-violet-400 rounded cursor-default"
+            onClick={() => router.push('/vencimientos')}
+          >
+            Vencimientos
+          </button>
           <div id="component-5" className="col-span-1 row-span-2 border border-black p-4 bg-white">
             {data.length > 0 ? (
               data.map((item, index) => (
@@ -60,8 +70,20 @@ export default function HomePage({ session }) {
               </div>
             )}
           </div>
-          <button id="component-3" className="col-span-1 border border-violet-800 p-4 bg-violet-200 text-black hover:bg-violet-400">3</button>
-          <button id="component-4" className="col-span-1 border border-violet-800 p-4 bg-violet-200 text-black hover:bg-violet-400">4</button>
+          <button
+            id="component-3"
+            className="col-span-1 border border-violet-800 p-4 bg-violet-200 text-black hover:bg-violet-400 rounded cursor-default"
+            onClick={() => router.push('/notas')}
+          >
+            Notas
+          </button>
+          <button
+            id="component-4"
+            className="col-span-1 border border-violet-800 p-4 bg-violet-200 text-black hover:bg-violet-400 rounded cursor-default"
+            onClick={() => router.push('/informarClientes')}
+          >
+            Informar Clientes
+          </button>
         </div>
         
       </main>
@@ -80,7 +102,7 @@ export async function getServerSideProps(context) {
   if (!session) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/login',
         permanent: false,
       },
     };

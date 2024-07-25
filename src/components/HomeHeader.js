@@ -28,10 +28,19 @@ export default function HomeHeader() {
     <header className="bg-violet-800 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-4">
-          <div className="logo text-xl font-bold">Logo</div>
+          <div className="logo text-xl font-bold">
+            <img src="/images/amatista-web-logo.jpg" alt="Logo" className="w-10 h-10" />
+          </div>
           <nav className="space-x-4">
-            <Link href="/cliente" className="hover:underline text-violet-200 hover:text-white">Clientes</Link>
-            <Link href="#vencimientos" className="hover:underline text-violet-200 hover:text-white">Vencimientos</Link>
+            <Link href="/home">
+              <span className="hover:underline text-violet-200 hover:text-white cursor-pointer">Inicio</span>
+            </Link>
+            <Link href="/cliente">
+              <span className="hover:underline text-violet-200 hover:text-white cursor-pointer">Clientes</span>
+            </Link>
+            <Link href="#vencimientos">
+              <span className="hover:underline text-violet-200 hover:text-white cursor-pointer">Vencimientos</span>
+            </Link>
           </nav>
         </div>
         {session && session.user && (
@@ -45,7 +54,9 @@ export default function HomeHeader() {
             {dropdownVisible && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
                 <div className="py-1">
-                  <Link href="#profile" className="block px-4 py-2 text-gray-800 hover:bg-violet-100">Profile</Link>
+                  <Link href="#profile">
+                    <span className="block px-4 py-2 text-gray-800 hover:bg-violet-100 cursor-pointer">Profile</span>
+                  </Link>
                   <button 
                     onClick={() => signOut({ callbackUrl: '/' })} 
                     className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-violet-100"
