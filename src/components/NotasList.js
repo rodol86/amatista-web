@@ -14,6 +14,12 @@ const NotasList = ({ notas }) => {
 };
 
 const NotaCard = ({ nota }) => {
+  const [expanded, setExpanded] = useState(false);
+
+  const toggleExpanded = () => {
+    setExpanded(!expanded);
+  };
+
   return (
     <div className="relative bg-white p-4 border border-violet-300 rounded-lg shadow-md">
       {nota.conFechaVencimiento && (
@@ -24,7 +30,13 @@ const NotaCard = ({ nota }) => {
         </div>
       )}
       <h2 className="text-violet-700 text-lg font-bold mb-2">Nota {nota.id}</h2>
-      <p className="text-gray-700 mb-2" style={{ whiteSpace: 'pre-wrap' }}>{nota.texto}</p>
+      <p
+        className={`text-gray-700 mb-2 ${expanded ? '' : 'line-clamp-3'}`}
+        style={{ whiteSpace: 'pre-wrap' }}
+        onClick={toggleExpanded}
+      >
+        {nota.texto}
+      </p>
       {nota.conRecordatorio && (
         <div className="text-gray-700 mb-2">
           <button
