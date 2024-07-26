@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Tooltip } from 'react-tooltip';
 
-const NotasList = ({ notas }) => {
+const NotasList = ({ notas, onEdit, onDelete }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {notas.map((nota) => (
-        <NotaCard key={nota.id} nota={nota} />
+        <NotaCard key={nota.id} nota={nota} onEdit={onEdit} onDelete={onDelete} />
       ))}
     </div>
   );
 };
 
-const NotaCard = ({ nota }) => {
+const NotaCard = ({ nota, onEdit, onDelete }) => {
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpanded = () => {
@@ -28,13 +28,27 @@ const NotaCard = ({ nota }) => {
             <button
               className="text-violet-500 hover:text-violet-700 focus:outline-none"
               data-tooltip-id={`tooltip-${nota.id}`}
-              data-tooltip-content={`Tiene recordatorio ${nota.frecuenciaRecordatorio} los días ${nota.diaRecordatorio} a las ${nota.horaRecordatorio}`}
+              data-tooltip-content={`Tiene recordatorio ${nota.frecuenciaRecordatorio} los días ${nota.diaRecordatorio} a las ${nota.horaRecordatorio.substring(1)}`}
             >
               <FontAwesomeIcon icon={faBell} />
             </button>
             <Tooltip id={`tooltip-${nota.id}`} place="top" effect="solid" className="z-10" />
           </div>
         )}
+        <div className="flex space-x-2">
+          <button
+            className="text-violet-500 hover:text-violet-700 focus:outline-none"
+            onClick={() => onEdit(nota)}
+          >
+            <FontAwesomeIcon icon={faEdit} />
+          </button>
+          <button
+            className="text-violet-500 hover:text-violet-700 focus:outline-none"
+            onClick={() => onDelete(nota.id)}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        </div>
       </div>
       <p
         className={`text-gray-700 mb-2 ${expanded ? '' : 'line-clamp-3'}`}

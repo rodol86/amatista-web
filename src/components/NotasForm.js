@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const NotasForm = ({ handleSubmit }) => {
+const NotasForm = ({ handleSubmit, nota }) => {
   const [texto, setTexto] = useState('');
   const [conRecordatorio, setConRecordatorio] = useState(false);
   const [horaRecordatorio, setHoraRecordatorio] = useState('');
@@ -10,14 +10,38 @@ const NotasForm = ({ handleSubmit }) => {
   const [conVencimiento, setConVencimiento] = useState(false);
   const [vencimientoFecha, setVencimientoFecha] = useState('');
 
+  useEffect(() => {
+    if (nota) {
+      setTexto(nota.texto);
+      setConRecordatorio(nota.conRecordatorio);
+      setHoraRecordatorio(nota.horaRecordatorio || '');
+      setFrecuenciaRecordatorio(nota.frecuenciaRecordatorio || 'Diario');
+      setDiaRecordatorio(nota.diaRecordatorio || 'Lunes');
+      setRecordatorioHora(nota.horaRecordatorio ? nota.horaRecordatorio.substring(1) : ''); // Extract only the "HH:MM" part
+      setConVencimiento(nota.conFechaVencimiento);
+      setVencimientoFecha(nota.fechaVencimiento || '');
+    } else {
+      // Clear the form if no note is being edited
+      setTexto('');
+      setConRecordatorio(false);
+      setHoraRecordatorio('');
+      setFrecuenciaRecordatorio('Diario');
+      setDiaRecordatorio('Lunes');
+      setRecordatorioHora('');
+      setConVencimiento(false);
+      setVencimientoFecha('');
+    }
+  }, [nota]);
+
   const onSubmit = (event) => {
     event.preventDefault();
     handleSubmit({
       texto,
       conRecordatorio,
-      horaRecordatorio: conRecordatorio ? `${horaRecordatorio}T${recordatorioHora}` : '',
+      horaRecordatorio: conRecordatorio ? `T${recordatorioHora}` : '',
       frecuenciaRecordatorio,
       diaRecordatorio,
+      recordatorioHora,
       conFechaVencimiento: conVencimiento,
       fechaVencimiento: conVencimiento ? vencimientoFecha : '',
     });
@@ -79,7 +103,7 @@ const NotasForm = ({ handleSubmit }) => {
             Día
           </label>
           <select
-            id="diaRecordatorio"
+            id="diaRecordorio"
             value={diaRecordatorio}
             onChange={(e) => setDiaRecordatorio(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-violet-500 mb-4"
